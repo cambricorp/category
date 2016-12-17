@@ -52,9 +52,7 @@ trait Categorizable
     public function categorize($categories): self
     {
         // Array of category slugs
-        if (is_string($categories) || (is_array($categories) && is_string($categories[0]))) {
-            $categories = Category::whereIn('slug', (array) $categories)->get();
-        }
+        $categories = $this->hydrateIfString($categories);
 
         // Single category model
         if ($categories instanceof Category) {
@@ -83,9 +81,7 @@ trait Categorizable
     public function recategorize($categories): self
     {
         // Array of category slugs
-        if (is_string($categories) || (is_array($categories) && is_string($categories[0]))) {
-            $categories = Category::whereIn('slug', (array) $categories)->get();
-        }
+        $categories = $this->hydrateIfString($categories);
 
         // Single category model
         if ($categories instanceof Category) {
@@ -114,9 +110,7 @@ trait Categorizable
     public function uncategorize($categories): self
     {
         // Array of category slugs
-        if (is_string($categories) || (is_array($categories) && is_string($categories[0]))) {
-            $categories = Category::whereIn('slug', (array) $categories)->get();
-        }
+        $categories = $this->hydrateIfString($categories);
 
         // Fire the category removing event
         static::$dispatcher->fire('rinvex.fort.category.removing', [$this, $categories]);
@@ -201,5 +195,18 @@ trait Categorizable
 
         return $this->categories->pluck('id')->count() == count($categories)
                && $this->categories->pluck('id')->diff($categories)->isEmpty();
+    }
+
+    /**
+     * Hydrate categories if it's string based.
+     *
+     * @param $categories
+     *
+     * @return array
+     */
+    protected function hydrateIfString($categories)
+    {
+        return is_string($categories) || (is_array($categories) && is_string($categories[0]))
+            ? Category::whereIn('slug', (array) $categories)->get() : $categories;
     }
 }
