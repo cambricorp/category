@@ -61,14 +61,14 @@ trait Categorizable
             $categories = [$categories->id];
         }
 
-        // Fire the category assigning event
-        static::$dispatcher->fire('rinvex.fort.category.assigning', [$this, $categories]);
+        // Fire the category adding event
+        static::$dispatcher->fire('rinvex.fort.category.adding', [$this, $categories]);
 
         // Assign categories
         $this->categories()->syncWithoutDetaching($categories);
 
-        // Fire the category assigned event
-        static::$dispatcher->fire('rinvex.fort.category.assigned', [$this, $categories]);
+        // Fire the category added event
+        static::$dispatcher->fire('rinvex.fort.category.added', [$this, $categories]);
 
         return $this;
     }
@@ -92,14 +92,14 @@ trait Categorizable
             $categories = [$categories->id];
         }
 
-        // Fire the category assigning event
-        static::$dispatcher->fire('rinvex.fort.category.assigning', [$this, $categories]);
+        // Fire the category syncing event
+        static::$dispatcher->fire('rinvex.fort.category.syncing', [$this, $categories]);
 
         // Assign categories
         $this->categories()->sync($categories);
 
-        // Fire the category assigned event
-        static::$dispatcher->fire('rinvex.fort.category.assigned', [$this, $categories]);
+        // Fire the category synced event
+        static::$dispatcher->fire('rinvex.fort.category.synced', [$this, $categories]);
 
         return $this;
     }
@@ -118,7 +118,7 @@ trait Categorizable
             $categories = Category::whereIn('slug', (array) $categories)->get();
         }
 
-        // Fire the category removed event
+        // Fire the category removing event
         static::$dispatcher->fire('rinvex.fort.category.removing', [$this, $categories]);
 
         // Detach categories
