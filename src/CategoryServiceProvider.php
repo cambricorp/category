@@ -24,7 +24,7 @@ class CategoryServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      */
-    public function boot(): void
+    public function boot()
     {
         // Load migrations
         $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
