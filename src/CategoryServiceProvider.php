@@ -22,7 +22,15 @@ use Illuminate\Support\ServiceProvider;
 class CategoryServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap the application services.
+     * {@inheritdoc}
+     */
+    public function register()
+    {
+        //
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function boot()
     {
