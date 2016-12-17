@@ -30,7 +30,6 @@ class CreateCategorizablesTable extends Migration
             // Columns
             $table->integer('category_id');
             $table->morphs('categorizable');
-            $table->timestamps();
 
             // Engine
             $table->engine = 'InnoDB';
