@@ -30,7 +30,7 @@ class Category extends Model
     use NodeTrait;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $guarded = [
         'id',

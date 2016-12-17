@@ -31,7 +31,7 @@ class CategoryServiceProvider extends ServiceProvider
 
         // Publish migrations
         $this->publishes([
-            realpath(__DIR__.'/../../database/migrations') => database_path('migrations')
+            realpath(__DIR__.'/../../database/migrations') => database_path('migrations'),
         ], 'migrations');
     }
 }
