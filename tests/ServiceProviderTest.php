@@ -15,7 +15,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\Category\Test\Categorizable;
+namespace Rinvex\Category\Test;
 
 use Rinvex\Category\CategoryServiceProvider;
 use GrahamCampbell\TestBench\AbstractPackageTestCase;
