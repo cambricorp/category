@@ -30,11 +30,11 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             // Columns
             $table->increments('id');
-            NestedSet::columns($table);
+            $table->json('name');
             $table->string('slug');
-            $table->string('name');
-            $table->string('description')->nullable();
+            $table->json('description')->nullable();
             $table->integer('order')->default(0);
+            NestedSet::columns($table);
             $table->timestamps();
             $table->softDeletes();
 

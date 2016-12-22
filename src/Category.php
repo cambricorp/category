@@ -22,6 +22,7 @@ use Kalnoy\Nestedset\NodeTrait;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\EloquentSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 use Spatie\EloquentSortable\SortableTrait;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -31,6 +32,17 @@ class Category extends Model implements Sortable
     use HasSlug;
     use NodeTrait;
     use SortableTrait;
+    use HasTranslations;
+
+    /**
+     * The attributes that are translatable.
+     *
+     * @var array
+     */
+    public $translatable = [
+        'name',
+        'description',
+    ];
 
     /**
      * The sortable settings.
