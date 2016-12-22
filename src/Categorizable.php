@@ -35,11 +35,13 @@ trait Categorizable
     /**
      * Get the category list.
      *
+     * @param string $keyColumn
+     *
      * @return array
      */
-    public function categoriesList(): array
+    public function categoriesList(string $keyColumn = 'id'): array
     {
-        return $this->categories()->lists('name', 'id')->toArray();
+        return $this->categories()->lists('name', $keyColumn)->toArray();
     }
 
     /**
