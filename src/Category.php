@@ -101,6 +101,7 @@ class Category extends Model implements Sortable
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
+            ->doNotGenerateSlugsOnUpdate()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
