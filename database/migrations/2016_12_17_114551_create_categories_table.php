@@ -34,7 +34,7 @@ class CreateCategoriesTable extends Migration
             $table->string('slug');
             $table->string('name');
             $table->string('description')->nullable();
-            $table->integer('order_column')->nullable();
+            $table->integer('order')->default(0);
             $table->timestamps();
             $table->softDeletes();
 
