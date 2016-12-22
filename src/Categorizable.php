@@ -39,7 +39,7 @@ trait Categorizable
      */
     public function categoriesList(): array
     {
-        return $this->categories()->lists('title', 'id')->toArray();
+        return $this->categories()->lists('name', 'id')->toArray();
     }
 
     /**

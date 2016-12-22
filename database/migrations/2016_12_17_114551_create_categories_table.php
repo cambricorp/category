@@ -32,8 +32,9 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             NestedSet::columns($table);
             $table->string('slug');
-            $table->string('title');
+            $table->string('name');
             $table->string('description')->nullable();
+            $table->integer('order_column')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
