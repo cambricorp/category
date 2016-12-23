@@ -318,7 +318,7 @@ trait Categorizable
         $event = $action == 'syncWithoutDetaching' ? 'attach' : $action;
 
         // Hydrate Categories
-        $categories = static::hydrateCategories($categories, in_array($event, ['sync', 'attach']))->pluck('id')->toArray();
+        $categories = static::hydrateCategories($categories)->pluck('id')->toArray();
 
         // Fire the category syncing event
         static::$dispatcher->fire("rinvex.category.{$event}ing", [$this, $categories]);
