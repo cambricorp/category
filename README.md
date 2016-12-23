@@ -18,7 +18,7 @@ It utilizes the power of **[Nested Sets](https://github.com/lazychaser/laravel-n
 
 1. Install the package via composer:
     ```shell
-    composer require rinvex/authy
+    composer require rinvex/category
     ```
 
 2. Execute migrations via the following command:
