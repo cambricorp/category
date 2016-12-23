@@ -308,7 +308,7 @@ trait Categorizable
      * Set the given category(ies) to the model.
      *
      * @param int|string|array|\ArrayAccess|\Rinvex\Category\Category $categories
-     * @param string                                              $action
+     * @param string                                                  $action
      *
      * @return void
      */
