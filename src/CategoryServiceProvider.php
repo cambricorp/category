@@ -34,12 +34,14 @@ class CategoryServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Load migrations
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        if ($this->app->runningInConsole()) {
+            // Load migrations
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-        // Publish migrations
-        $this->publishes([
-            realpath(__DIR__.'/../../database/migrations') => database_path('migrations'),
-        ], 'migrations');
+            // Publish migrations
+            $this->publishes([
+                realpath(__DIR__.'/../../database/migrations') => database_path('migrations'),
+            ], 'migrations');
+        }
     }
 }
