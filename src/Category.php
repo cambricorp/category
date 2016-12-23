@@ -94,4 +94,43 @@ class Category extends Model implements Sortable
     {
         return static::get()->toTree()->toArray();
     }
+
+    /**
+     * Find category by name or create if not exists.
+     *
+     * @param string      $name
+     * @param string|null $locale
+     *
+     * @return static
+     */
+    protected static function findByNameOrCreate(string $name, string $locale = null): Category
+    {
+        $locale = $locale ?? app()->getLocale();
+        $category = static::findByName($name, $locale);
+
+        if (! $category) {
+            $category = static::create([
+                'name' => [$locale => $name],
+            ]);
+        }
+
+        return $category;
+    }
+
+    /**
+     * Find category by name.
+     *
+     * @param string      $name
+     * @param string|null $locale
+     *
+     * @return static|null
+     */
+    public static function findByName(string $name, string $locale = null)
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return static::query()
+                     ->where("name->{$locale}", $name)
+                     ->first();
+    }
 }
