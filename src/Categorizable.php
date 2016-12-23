@@ -186,7 +186,7 @@ trait Categorizable
     /**
      * Sync the given category(ies) to the model.
      *
-     * @param int|string|array|\ArrayAccess|\Rinvex\Category\Category $categories
+     * @param int|string|array|\ArrayAccess|\Rinvex\Category\Category|null $categories
      *
      * @return $this
      */
@@ -237,12 +237,12 @@ trait Categorizable
 
         // Array of category slugs
         if (is_array($categories) && isset($categories[0]) && is_string($categories[0])) {
-            return $this->categories->pluck('slug')->intersect($categories)->isEmpty();
+            return ! $this->categories->pluck('slug')->intersect($categories)->isEmpty();
         }
 
         // Array of category ids
         if (is_array($categories) && isset($categories[0]) && is_int($categories[0])) {
-            return $this->categories->pluck('id')->intersect($categories)->isEmpty();
+            return ! $this->categories->pluck('id')->intersect($categories)->isEmpty();
         }
 
         // Collection of category models
