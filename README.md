@@ -124,6 +124,7 @@ $post->hasAllCategories(['my-new-category', 'my-brand-new-category']);
     ```php
     Category::create(['name' => ['en' => 'My New Category'], 'slug' => 'custom-category-slug']);
     ```
+
 - All categorizable methods that accept list of tags are smart enough to handle almost all kind of inputs, for example you can pass single category slug, single category id, single category model, an array of category slugs, an array of category ids, or a collection of category models. It will check input type and behave accordingly. Example:
     ```php
     $post->hasCategory(1);
@@ -134,12 +135,14 @@ $post->hasAllCategories(['my-new-category', 'my-brand-new-category']);
     $post->hasCategory(Category::whereIn('id', [5,6,7)->get());
     ```
     **Rinvex Category** can understand any of the above parameter syntax and interpret it correctly, same for other methods in this package.
+
 - It's very easy to get all models attached to certain category as follows:
     ```php
     $category = Category::find(1);
     $category->entries(\App\Post::class);
     ```
-- Since **Rinvex Category** is built on top of the effecient nested-sets package [`kalnoy/nestedset`](https://github.com/lazychaser/laravel-nestedset), you can create / update / delete / list categories smoothly without any hassle, and sure it manage all the nested-set stuff automatically for you.
+
+- Since **Rinvex Category** is built on top of the effecient nested-sets package [`kalnoy/nestedset`](https://github.com/lazychaser/laravel-nestedset), you can list, create, update, and delete categories smoothly without any hassle, and sure it manage all the nested-set stuff automatically for you.
 
 
 ## Changelog
