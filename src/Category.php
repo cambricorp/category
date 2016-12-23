@@ -20,6 +20,7 @@ namespace Rinvex\Category;
 use Spatie\Sluggable\HasSlug;
 use Kalnoy\Nestedset\NodeTrait;
 use Spatie\Sluggable\SlugOptions;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -82,6 +83,22 @@ class Category extends Model
     public static function tree(): array
     {
         return static::get()->toTree()->toArray();
+    }
+
+    /**
+     * Find many categories by name or create if not exists.
+     *
+     * @param array       $categories
+     * @param string|null $locale
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function findManyByNameOrCreate(array $categories, string $locale = null): Collection
+    {
+        // Expects array of category names
+        return collect($categories)->map(function ($category) use ($locale) {
+            return static::findByNameOrCreate($category, $locale);
+        });
     }
 
     /**

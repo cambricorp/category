@@ -78,6 +78,9 @@ Category::findByName('My New Category');                    Category::findByName
 
 // Find category by name or create if not exists
 Category::findByNameOrCreate('My Brand New Category');
+
+// Find many categories by name or create if not exists
+Category::findManyByNameOrCreate(['My Brand New Category 2', 'My Brand New Category 3']);
 ```
 
 > **Notes:** since **Rinvex Category** extends and utilizes other awesome packages, checkout the following documentations for further details:
