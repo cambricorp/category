@@ -35,7 +35,6 @@ Simply create a new eloquent model, and use `Categorizable` trait:
 namespace App;
 
 use Rinvex\Category\Categorizable;
-use Rinvex\Category\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
@@ -62,7 +61,7 @@ $post->categorize(['category-1', 'custom-category-123', 'new-category']);
 
 ### Uncategorize Your Model
 
-The `uncategorize` method **dettaches** the Post Model from the given Categories:
+The `uncategorize` method **detaches** the Post Model from the given Categories:
 ``` php
 $post->uncategorize(Category::find(1));
 ```

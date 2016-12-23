@@ -57,7 +57,6 @@ class Category extends Model implements Sortable
      *
      * @var array
      */
-
     public $sortable = ['order_column_name' => 'order'];
 
     /**
