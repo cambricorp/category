@@ -21,13 +21,14 @@ use Spatie\Sluggable\HasSlug;
 use Kalnoy\Nestedset\NodeTrait;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Category extends Model
 {
     use HasSlug;
     use NodeTrait;
+    use HasTranslations;
 
     /**
      * {@inheritdoc}
@@ -39,17 +40,17 @@ class Category extends Model
     ];
 
     /**
-     * Get all of the owning categorizable models.
+     * The attributes that are translatable.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     * @var array
      */
-    public function categorizable(): MorphTo
-    {
-        return $this->morphTo();
-    }
+    public $translatable = [
+        'name',
+        'description',
+    ];
 
     /**
-     * Get all of the entries that are assigned to this category.
+     * Get all attached models of the given class to the category.
      *
      * @param string $class
      *
@@ -58,6 +59,19 @@ class Category extends Model
     public function entries(string $class): MorphToMany
     {
         return $this->morphedByMany($class, 'categorizable');
+    }
+
+    /**
+     * Get the options for generating the slug.
+     *
+     * @return \Spatie\Sluggable\SlugOptions
+     */
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->doNotGenerateSlugsOnUpdate()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
     }
 
     /**
@@ -71,14 +85,51 @@ class Category extends Model
     }
 
     /**
-     * Get the options for generating the slug.
+     * Find category by name or create if not exists.
      *
-     * @return \Spatie\Sluggable\SlugOptions
+     * @param string      $name
+     * @param string|null $locale
+     *
+     * @return static
      */
-    public function getSlugOptions(): SlugOptions
+    protected static function findByNameOrCreate(string $name, string $locale = null): Category
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('title')
-            ->saveSlugsTo('slug');
+        $locale = $locale ?? app()->getLocale();
+
+        return static::findByName($name, $locale) ?: static::createByName($name, $locale);
+    }
+
+    /**
+     * Find category by name.
+     *
+     * @param string      $name
+     * @param string|null $locale
+     *
+     * @return static|null
+     */
+    public static function findByName(string $name, string $locale = null)
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return static::query()
+                     ->where("name->{$locale}", $name)
+                     ->first();
+    }
+
+    /**
+     * Create category by name.
+     *
+     * @param string      $name
+     * @param string|null $locale
+     *
+     * @return static
+     */
+    public static function createByName(string $name, string $locale = null): Category
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return static::create([
+            'name' => [$locale => $name],
+        ]);
     }
 }

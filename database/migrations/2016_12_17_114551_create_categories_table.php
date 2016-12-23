@@ -13,6 +13,8 @@
  * Link:    https://rinvex.com
  */
 
+declare(strict_types=1);
+
 use Kalnoy\Nestedset\NestedSet;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -30,10 +32,10 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             // Columns
             $table->increments('id');
-            NestedSet::columns($table);
+            $table->json('name');
             $table->string('slug');
-            $table->string('title');
-            $table->string('description')->nullable();
+            $table->json('description')->nullable();
+            NestedSet::columns($table);
             $table->timestamps();
             $table->softDeletes();
 
