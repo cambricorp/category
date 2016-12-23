@@ -24,7 +24,6 @@ use Spatie\EloquentSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 use Spatie\EloquentSortable\SortableTrait;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Category extends Model implements Sortable
@@ -61,18 +60,7 @@ class Category extends Model implements Sortable
         'updated_at',
     ];
 
-    /**
-     * Get all of the owning categorizable models.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function categorizable(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    /**
-     * Get all of the entries that are assigned to this category.
+     * Get all attached models of the given class to the category.
      *
      * @param string $class
      *
