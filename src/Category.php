@@ -34,6 +34,15 @@ class Category extends Model implements Sortable
     use HasTranslations;
 
     /**
+     * {@inheritdoc}
+     */
+    protected $guarded = [
+        'id',
+        'created_at',
+        'updated_at',
+    ];
+
+    /**
      * The attributes that are translatable.
      *
      * @var array
@@ -52,14 +61,6 @@ class Category extends Model implements Sortable
     public $sortable = ['order_column_name' => 'order'];
 
     /**
-     * {@inheritdoc}
-     */
-    protected $guarded = [
-        'id',
-        'created_at',
-        'updated_at',
-    ];
-
      * Get all attached models of the given class to the category.
      *
      * @param string $class
@@ -69,16 +70,6 @@ class Category extends Model implements Sortable
     public function entries(string $class): MorphToMany
     {
         return $this->morphedByMany($class, 'categorizable');
-    }
-
-    /**
-     * Get category tree.
-     *
-     * @return array
-     */
-    public static function tree(): array
-    {
-        return static::get()->toTree()->toArray();
     }
 
     /**
@@ -92,5 +83,15 @@ class Category extends Model implements Sortable
             ->doNotGenerateSlugsOnUpdate()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
+    }
+
+    /**
+     * Get category tree.
+     *
+     * @return array
+     */
+    public static function tree(): array
+    {
+        return static::get()->toTree()->toArray();
     }
 }
