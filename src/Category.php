@@ -20,17 +20,14 @@ namespace Rinvex\Category;
 use Spatie\Sluggable\HasSlug;
 use Kalnoy\Nestedset\NodeTrait;
 use Spatie\Sluggable\SlugOptions;
-use Spatie\EloquentSortable\Sortable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
-use Spatie\EloquentSortable\SortableTrait;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-class Category extends Model implements Sortable
+class Category extends Model
 {
     use HasSlug;
     use NodeTrait;
-    use SortableTrait;
     use HasTranslations;
 
     /**
@@ -51,13 +48,6 @@ class Category extends Model implements Sortable
         'name',
         'description',
     ];
-
-    /**
-     * The sortable settings.
-     *
-     * @var array
-     */
-    public $sortable = ['order_column_name' => 'order'];
 
     /**
      * Get all attached models of the given class to the category.

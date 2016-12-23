@@ -35,7 +35,6 @@ class CreateCategoriesTable extends Migration
             $table->json('name');
             $table->string('slug');
             $table->json('description')->nullable();
-            $table->integer('order')->default(0);
             NestedSet::columns($table);
             $table->timestamps();
             $table->softDeletes();

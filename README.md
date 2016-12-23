@@ -2,7 +2,7 @@
 
 **Rinvex Category** is a polymorphic Laravel package, for category management. You can categorize any eloquent model with ease, and utilize the power of nested sets.
 
-It utilizes the power of **[Nested Sets](https://github.com/lazychaser/laravel-nestedset)**, and the awesomeness of [Sluggable](https://github.com/spatie/laravel-sluggable), [Sortable](https://github.com/spatie/eloquent-sortable), and [Translatable](https://github.com/spatie/laravel-translatable) models.
+It utilizes the power of **[Nested Sets](https://github.com/lazychaser/laravel-nestedset)**, and the awesomeness of **[Sluggable](https://github.com/spatie/laravel-sluggable)**, and **[Translatable](https://github.com/spatie/laravel-translatable)** models out of the box.
 
 [![Packagist](https://img.shields.io/packagist/v/rinvex/category.svg?label=Packagist&style=flat-square)](https://packagist.org/packages/rinvex/category)
 [![VersionEye Dependencies](https://img.shields.io/versioneye/d/php/rinvex:category.svg?label=Dependencies&style=flat-square)](https://www.versioneye.com/php/rinvex:category/)
@@ -82,7 +82,6 @@ Category::findByNameOrCreate('My Brand New Category');
 
 > **Notes:** since **Rinvex Category** extends and utilizes other awesome packages, checkout the following documentations for further details:
 > - Powerful Nested Sets using [`kalnoy/nestedset`](https://github.com/lazychaser/laravel-nestedset)
-> - Easily Sortable using [`spatie/eloquent-sortable`](https://github.com/spatie/eloquent-sortable)
 > - Automatic Slugging using [`spatie/laravel-sluggable`](https://github.com/spatie/laravel-sluggable)
 > - Translatable out of the box using [`spatie/laravel-translatable`](https://github.com/spatie/laravel-translatable)
 

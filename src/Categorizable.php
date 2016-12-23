@@ -48,7 +48,7 @@ trait Categorizable
      */
     public function categories(): MorphToMany
     {
-        return $this->morphToMany(static::getCategoryClassName(), 'categorizable')->orderBy('order')->withTimestamps();
+        return $this->morphToMany(static::getCategoryClassName(), 'categorizable')->withTimestamps();
     }
 
     /**
