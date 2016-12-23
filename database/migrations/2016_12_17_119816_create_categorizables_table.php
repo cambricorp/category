@@ -36,7 +36,7 @@ class CreateCategorizablesTable extends Migration
             $table->timestamps();
 
             // Indexes
-            $table->unique(['category_id', 'categorizable_id', 'categorizable_type']);
+            $table->unique(['category_id', 'categorizable_id', 'categorizable_type'], 'categorizables_ids_type_unique');
             $table->foreign('category_id')
                   ->references('id')
                   ->on('categories')
