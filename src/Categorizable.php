@@ -98,6 +98,74 @@ trait Categorizable
     }
 
     /**
+     * Scope query with all the given categories.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder                   $query
+     * @param int|string|array|\ArrayAccess|\Rinvex\Category\Category $categories
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithAllCategories(Builder $query, $categories): Builder
+    {
+        $categories = static::isCategoriesStringBased($categories) ? $categories : static::hydrateCategories($categories)->pluck('slug');
+
+        collect($categories)->each(function ($category) use ($query) {
+            $query->whereHas('categories', function (Builder $query) use ($category) {
+                return $query->where('slug', $category);
+            });
+        });
+
+        return $query;
+    }
+
+    /**
+     * Scope query with any of the given categories.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int|string|array|\ArrayAccess|\Rinvex\Category\Category $categories
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithAnyCategories(Builder $query, $categories): Builder
+    {
+        $categories = static::isCategoriesStringBased($categories) ? $categories : static::hydrateCategories($categories)->pluck('slug');
+
+        return $query->whereHas('categories', function (Builder $query) use ($categories) {
+            $query->whereIn('slug', $categories);
+        });
+    }
+
+    /**
+     * Scope query without any of the given categories.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int|string|array|\ArrayAccess|\Rinvex\Category\Category  $categories
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithoutAnyCategories(Builder $query, $categories): Builder
+    {
+        $categories = static::isCategoriesStringBased($categories) ? $categories : static::hydrateCategories($categories)->pluck('slug');
+
+        return $query->whereDoesntHave('categories', function (Builder $query) use ($categories) {
+            $query->whereIn('slug', $categories);
+        });
+    }
+
+    /**
+     * Scope query without any of the given categories.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int|string|array|\ArrayAccess|\Rinvex\Category\Category  $categories
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithoutCategories(Builder $query, $categories): Builder
+    {
+        return static::withoutAnyCategories($query, $categories);
+    }
+
+    /**
      * Attach the given category(ies) to the model.
      *
      * @param int|string|array|\ArrayAccess|\Rinvex\Category\Category $categories
