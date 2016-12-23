@@ -105,15 +105,8 @@ class Category extends Model implements Sortable
     protected static function findByNameOrCreate(string $name, string $locale = null): Category
     {
         $locale = $locale ?? app()->getLocale();
-        $category = static::findByName($name, $locale);
 
-        if (! $category) {
-            $category = static::create([
-                'name' => [$locale => $name],
-            ]);
-        }
-
-        return $category;
+        return static::findByName($name, $locale) ?: static::createByName($name, $locale);
     }
 
     /**
@@ -131,5 +124,22 @@ class Category extends Model implements Sortable
         return static::query()
                      ->where("name->{$locale}", $name)
                      ->first();
+    }
+
+    /**
+     * Create category by name.
+     *
+     * @param string      $name
+     * @param string|null $locale
+     *
+     * @return static
+     */
+    public static function createByName(string $name, string $locale = null): Category
+    {
+        $locale = $locale ?? app()->getLocale();
+
+        return static::create([
+            'name' => [$locale => $name],
+        ]);
     }
 }
