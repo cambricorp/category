@@ -6,4 +6,4 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
 ## v1.0.0 - 2016-12-23
-- Commit first draft.
+- Tag first official release.
