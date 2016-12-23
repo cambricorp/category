@@ -18,18 +18,61 @@ declare(strict_types=1);
 namespace Rinvex\Category;
 
 use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait Categorizable
 {
     /**
-     * Get all of the categories for the model.
+     * The Queued categories.
+     *
+     * @var array
+     */
+    protected $queuedCategories = [];
+
+    /**
+     * Get all attached categories to the model.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function categories(): MorphToMany
     {
-        return $this->morphToMany(Category::class, 'categorizable')->withTimestamps();
+        return $this->morphToMany(static::getCategoryClassName(), 'categorizable')->orderBy('order')->withTimestamps();
+    }
+
+    /**
+     * Mutate categories attribute.
+     *
+     * @param int|string|array|\ArrayAccess|\Rinvex\Category\Category $categories
+     *
+     * @return void
+     */
+    public function setCategoriesAttribute($categories)
+    {
+        if (! $this->exists) {
+            $this->queuedCategories = $categories;
+
+            return;
+        }
+
+        $this->categorize($categories);
+    }
+
+    /**
+     * Boot eloquent model categorizable trait.
+     *
+     * @return void
+     */
+    public static function bootCategorizable()
+    {
+        static::created(function (Model $categorizableModel) {
+            if ($categorizableModel->queuedCategories) {
+                $categorizableModel->categorize($categorizableModel->queuedCategories);
+
+                $categorizableModel->queuedCategories = [];
+            }
+        });
     }
 
     /**
