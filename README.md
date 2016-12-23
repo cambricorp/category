@@ -2,6 +2,8 @@
 
 **Rinvex Category** is a polymorphic Laravel package, for category management. You can categorize any eloquent model with ease, and utilize the power of nested sets.
 
+It utilizes the power of **[Nested Sets](https://github.com/lazychaser/laravel-nestedset)**, and the awesomeness of [Sluggable](https://github.com/spatie/laravel-sluggable), [Sortable](https://github.com/spatie/eloquent-sortable), and [Translatable](https://github.com/spatie/laravel-translatable) models.
+
 [![Packagist](https://img.shields.io/packagist/v/rinvex/category.svg?label=Packagist&style=flat-square)](https://packagist.org/packages/rinvex/category)
 [![VersionEye Dependencies](https://img.shields.io/versioneye/d/php/rinvex:category.svg?label=Dependencies&style=flat-square)](https://www.versioneye.com/php/rinvex:category/)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/rinvex/category.svg?label=Scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/rinvex/category/)
@@ -14,15 +16,28 @@
 
 ## Installation
 
-Install via `composer require rinvex/category`, then include the following service provider to the `'providers'` array inside `app/config/app.php`:
-``` php
-Rinvex\Category\CategoryServiceProvider::class
-```
+1. Install the package via composer:
+    ```shell
+    composer require rinvex/authy
+    ```
 
-Finally you'll need to execute migrations via the following command:
-```
-php artisan migrate
-```
+2. Execute migrations via the following command:
+    ```
+    php artisan migrate --path="vendor/rinvex/category/database/migrations"
+    ```
+
+3. **Optionally** add the following service provider to the `'providers'` array inside `app/config/app.php`:
+    ```php
+    Rinvex\Category\CategoryServiceProvider::class
+    ```
+    
+   And then you can publish the migrations by running the following command:
+    ```shell
+    php artisan vendor:publish --tag="migrations"
+    ```
+
+4. Done!
+
 
 ## Usage
 
@@ -34,71 +49,97 @@ Simply create a new eloquent model, and use `Categorizable` trait:
 
 namespace App;
 
+use Rinvex\Category\Category;
 use Rinvex\Category\Categorizable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Post extends Model
 {
     use Categorizable;
+
+    public function categories(): MorphToMany
+    {
+        return $this->morphToMany(Category::class, 'categorizable');
+    }
 }
-
-$post = new Post();
 ```
 
-### Get Model Category List
+### Manage Your Categories
 
-The `categoriesList` method gets an array with ids and names of categories (useful for drop-downs):
-``` php
-$post->categoriesList();
+```php
+use Rinvex\Category\Category;
+
+// Create a new category by name                            // Create a new category by translation
+Category::createByName('My New Category');                  Category::createByName('تصنيف جديد', 'ar');
+
+// Get existing category by name                            // Get existing category by translation
+Category::findByName('My New Category');                    Category::findByName('تصنيف جديد', 'ar');
+
+// Find category by name or create if not exists
+Category::findByNameOrCreate('My Brand New Category');
 ```
 
-### Categorize Your Model
+> **Notes:** since **Rinvex Category** extends and utilizes other awesome packages, checkout the following documentations for further details:
+> - Powerful Nested Sets using [`kalnoy/nestedset`](https://github.com/lazychaser/laravel-nestedset)
+> - Easily Sortable using [`spatie/eloquent-sortable`](https://github.com/spatie/eloquent-sortable)
+> - Automatic Slugging using [`spatie/laravel-sluggable`](https://github.com/spatie/laravel-sluggable)
+> - Translatable out of the box using [`spatie/laravel-translatable`](https://github.com/spatie/laravel-translatable)
 
-The `categorize` method **attaches** the Post Model to the given Categories:
-``` php
-$post->categorize(['category-1', 'custom-category-123', 'new-category']);
+### Manage Your Categorizable Model
+
+The API is intutive and very straightfarwad, so let's give it a quick look:
+```php
+// Instantiate your model
+$post = new \App\Post();
+
+// Attach given categories to the model
+$post->categorize(['my-new-category', 'my-brand-new-category']);
+
+// Detach given categories from the model
+$post->uncategorize(['my-new-category']);
+
+// Sync given categories with the model (remove attached categories and reattach given ones)
+$post->recategorize(['my-new-category', 'my-brand-new-category']);
+
+// Remove all attached categories
+$post->recategorize(null);
+
+// Get attached categories collection
+$post->categories;
+
+// Get attached categories array with slugs and names 
+$post->categoryList();
+
+// Check model if has any given categories
+$post->hasCategory(['my-new-category', 'my-brand-new-category']);
+
+// Check model if has any given categories
+$post->hasAllCategories(['my-new-category', 'my-brand-new-category']);
 ```
 
-### Uncategorize Your Model
+### Advanced Usage
 
-The `uncategorize` method **detaches** the Post Model from the given Categories:
-``` php
-$post->uncategorize(Category::find(1));
-```
-
-### Synchronize Your Model's Categories
-
-The `recategorize` method **synchronizes** the Post Model's cagtegories:
-``` php
-$post->recategorize(Category::whereIn('id', [1, 2, 3]));
-```
-
-### Check If Your Model Has Any Given Category
-
-The `hasCategory` and it's alias `hasAnyCategory` methods determines if your model has (one of) the given categories:
-``` php
-$post->hasCategory([1, 2, 3]);
-$post->hasAnyCategory(41);
-```
-
-### Check If Your Model Has All Given Categories
-
-The `hasAllCategories` method determines if your model has all of the given categories:
-``` php
-$post->hasAllCategories(['category-1', 'custom-category-123', 'new-category']);
-```
-
-### Get All Models In Category
-
-The `entries` method gets all of the entries that are assigned to this category:
-``` php
-$category = new Category();
-$category->entries(\App\Post::class);
-```
-
-> **Notes:** 
-> - Almost all categorizable methods can accept variety of inputs, such as: 1) single category slug; 2) single category id; 3) single category model; 4) category collection; 5) array of category slugs; 6) array of category ids; **This package is smart enough to recognize and deal with whatever inputs n these methods.**
-> - This package is built upon the effecient nested-sets package [lazychaser/laravel-nestedset](https://github.com/lazychaser/laravel-nestedset), check it out for further details on how to create / update / delete / list categories and their attached items (categorizables).
+- **Rinvex Category** auto generates slugs and auto detect and insert default translation for you, but you still can pass it explicitly through normal eloquent `create` method, as follows:
+    ```php
+    Category::create(['name' => ['en' => 'My New Category'], 'slug' => 'custom-category-slug']);
+    ```
+- All categorizable methods that accept list of tags are smart enough to handle almost all kind of inputs, for example you can pass single category slug, single category id, single category model, an array of category slugs, an array of category ids, or a collection of category models. It will check input type and behave accordingly. Example:
+    ```php
+    $post->hasCategory(1);
+    $post->hasCategory([1,2,4]);
+    $post->hasCategory('my-new-category');
+    $post->hasCategory(['my-new-category', 'my-brand-new-category']);
+    $post->hasCategory(Category::where('slug', 'my-new-category')->first());
+    $post->hasCategory(Category::whereIn('id', [5,6,7)->get());
+    ```
+    **Rinvex Category** can understand any of the above parameter syntax and interpret it correctly, same for other methods in this package.
+- It's very easy to get all models attached to certain category as follows:
+    ```php
+    $category = Category::find(1);
+    $category->entries(\App\Post::class);
+    ```
+- Since **Rinvex Category** is built on top of the effecient nested-sets package [`kalnoy/nestedset`](https://github.com/lazychaser/laravel-nestedset), you can create / update / delete / list categories smoothly without any hassle, and sure it manage all the nested-set stuff automatically for you.
 
 
 ## Changelog
