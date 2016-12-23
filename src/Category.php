@@ -92,7 +92,7 @@ class Category extends Model
      *
      * @return static
      */
-    protected static function findByNameOrCreate(string $name, string $locale = null): Category
+    public static function findByNameOrCreate(string $name, string $locale = null): Category
     {
         $locale = $locale ?? app()->getLocale();
 
