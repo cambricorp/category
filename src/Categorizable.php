@@ -44,12 +44,12 @@ trait Categorizable
     /**
      * Define a polymorphic many-to-many relationship.
      *
-     * @param string $related
-     * @param string $name
-     * @param string $table
-     * @param string $foreignKey
-     * @param string $otherKey
-     * @param bool   $inverse
+     * @param string      $related
+     * @param string      $name
+     * @param string|null $table
+     * @param string|null $foreignKey
+     * @param string|null $otherKey
+     * @param bool        $inverse
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
