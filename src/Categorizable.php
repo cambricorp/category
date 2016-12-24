@@ -32,6 +32,30 @@ trait Categorizable
     protected $queuedCategories = [];
 
     /**
+     * Register a created model event with the dispatcher.
+     *
+     * @param  \Closure|string $callback
+     * @param  int             $priority
+     *
+     * @return void
+     */
+    abstract public static function created($callback, $priority = 0);
+
+    /**
+     * Define a polymorphic many-to-many relationship.
+     *
+     * @param  string $related
+     * @param  string $name
+     * @param  string $table
+     * @param  string $foreignKey
+     * @param  string $otherKey
+     * @param  bool   $inverse
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    abstract public function morphToMany($related, $name, $table = null, $foreignKey = null, $otherKey = null, $inverse = false);
+
+    /**
      * Get category class name.
      *
      * @return string
