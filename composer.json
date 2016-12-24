@@ -1,6 +1,6 @@
 {
     "name": "rinvex/category",
-    "description": "Rinvex Category is a polymorphic Laravel package, for category management. You can categorize any eloquent model with ease, and utilize the power of nested sets.",
+    "description": "Rinvex Category is a polymorphic Laravel package, for category management. You can categorize any eloquent model with ease, and utilize the power of Nested Sets, and the awesomeness of Sluggable, and Translatable models out of the box.",
     "keywords": [
         "model",
         "laravel",
