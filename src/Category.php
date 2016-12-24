@@ -20,6 +20,7 @@ namespace Rinvex\Category;
 use Spatie\Sluggable\HasSlug;
 use Kalnoy\Nestedset\NodeTrait;
 use Spatie\Sluggable\SlugOptions;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -85,6 +86,22 @@ class Category extends Model
     }
 
     /**
+     * Find many categories by name or create if not exists.
+     *
+     * @param array       $categories
+     * @param string|null $locale
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public static function findManyByNameOrCreate(array $categories, string $locale = null): Collection
+    {
+        // Expects array of category names
+        return collect($categories)->map(function ($category) use ($locale) {
+            return static::findByNameOrCreate($category, $locale);
+        });
+    }
+
+    /**
      * Find category by name or create if not exists.
      *
      * @param string      $name
@@ -92,7 +109,7 @@ class Category extends Model
      *
      * @return static
      */
-    protected static function findByNameOrCreate(string $name, string $locale = null): Category
+    public static function findByNameOrCreate(string $name, string $locale = null): Category
     {
         $locale = $locale ?? app()->getLocale();
 

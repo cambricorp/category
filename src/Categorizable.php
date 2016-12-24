@@ -138,7 +138,7 @@ trait Categorizable
     }
 
     /**
-     * Scope query without any of the given categories.
+     * Scope query with any of the given categories.
      *
      * @param \Illuminate\Database\Eloquent\Builder                   $query
      * @param int|string|array|\ArrayAccess|\Rinvex\Category\Category $categories
@@ -146,17 +146,13 @@ trait Categorizable
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeWithoutAnyCategories(Builder $query, $categories, string $column = 'slug'): Builder
+    public function scopeWithCategories(Builder $query, $categories, string $column = 'slug'): Builder
     {
-        $categories = static::isCategoriesStringBased($categories) ? $categories : static::hydrateCategories($categories)->pluck($column);
-
-        return $query->whereDoesntHave('categories', function (Builder $query) use ($categories, $column) {
-            $query->whereIn($column, (array) $categories);
-        });
+        return static::scopeWithAnyCategories($query, $categories, $column);
     }
 
     /**
-     * Scope query without any of the given categories.
+     * Scope query without the given categories.
      *
      * @param \Illuminate\Database\Eloquent\Builder                   $query
      * @param int|string|array|\ArrayAccess|\Rinvex\Category\Category $categories
@@ -166,7 +162,23 @@ trait Categorizable
      */
     public function scopeWithoutCategories(Builder $query, $categories, string $column = 'slug'): Builder
     {
-        return static::withoutAnyCategories($query, $categories, $column);
+        $categories = static::isCategoriesStringBased($categories) ? $categories : static::hydrateCategories($categories)->pluck($column);
+
+        return $query->whereDoesntHave('categories', function (Builder $query) use ($categories, $column) {
+            $query->whereIn($column, (array) $categories);
+        });
+    }
+
+    /**
+     * Scope query without any categories.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder     $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeWithoutAnyCategories(Builder $query): Builder
+    {
+        return $query->doesntHave('categories');
     }
 
     /**
@@ -347,8 +359,9 @@ trait Categorizable
         $isCategoriesStringBased = static::isCategoriesStringBased($categories);
         $isCategoriesIntBased = static::isCategoriesIntBased($categories);
         $field = $isCategoriesStringBased ? 'slug' : 'id';
+        $className = static::getCategoryClassName();
 
-        return $isCategoriesStringBased || $isCategoriesIntBased ? Category::whereIn($field, (array) $categories)->get() : collect($categories);
+        return $isCategoriesStringBased || $isCategoriesIntBased ? $className::query()->whereIn($field, (array) $categories)->get() : collect($categories);
     }
 
     /**
