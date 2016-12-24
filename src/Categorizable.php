@@ -347,8 +347,9 @@ trait Categorizable
         $isCategoriesStringBased = static::isCategoriesStringBased($categories);
         $isCategoriesIntBased = static::isCategoriesIntBased($categories);
         $field = $isCategoriesStringBased ? 'slug' : 'id';
+        $className = static::getCategoryClassName();
 
-        return $isCategoriesStringBased || $isCategoriesIntBased ? Category::whereIn($field, (array) $categories)->get() : collect($categories);
+        return $isCategoriesStringBased || $isCategoriesIntBased ? $className::query()->whereIn($field, (array) $categories)->get() : collect($categories);
     }
 
     /**

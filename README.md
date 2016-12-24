@@ -68,11 +68,17 @@ class Post extends Model
 ```php
 use Rinvex\Category\Category;
 
-// Create a new category by name                            // Create a new category by translation
-Category::createByName('My New Category');                  Category::createByName('تصنيف جديد', 'ar');
+// Create a new category by name
+Category::createByName('My New Category');
 
-// Get existing category by name                            // Get existing category by translation
-Category::findByName('My New Category');                    Category::findByName('تصنيف جديد', 'ar');
+// Create a new category by translation
+Category::createByName('تصنيف جديد', 'ar');
+
+// Get existing category by name
+Category::findByName('My New Category');
+
+// Get existing category by translation
+Category::findByName('تصنيف جديد', 'ar');
 
 // Find category by name or create if not exists
 Category::findByNameOrCreate('My Brand New Category');
@@ -99,16 +105,13 @@ $post->categorize(['my-new-category', 'my-brand-new-category']);
 // Detach given categories from the model
 $post->uncategorize(['my-new-category']);
 
-// Sync given categories with the model (remove attached categories and reattach given ones)
-$post->recategorize(['my-new-category', 'my-brand-new-category']);
-
 // Remove all attached categories
 $post->recategorize(null);
 
 // Get attached categories collection
 $post->categories;
 
-// Get attached categories array with slugs and names 
+// Get attached categories array with slugs and names
 $post->categoryList();
 
 // Check model if has any given categories
@@ -116,6 +119,9 @@ $post->hasCategory(['my-new-category', 'my-brand-new-category']);
 
 // Check model if has any given categories
 $post->hasAllCategories(['my-new-category', 'my-brand-new-category']);
+
+// Sync given categories with the model (remove attached categories and reattach given ones)
+$post->recategorize(['my-new-category', 'my-brand-new-category']);
 ```
 
 ### Advanced Usage
@@ -143,6 +149,14 @@ $post->hasAllCategories(['my-new-category', 'my-brand-new-category']);
     ```
 
 - Since **Rinvex Category** is built on top of the effecient nested-sets package [`kalnoy/nestedset`](https://github.com/lazychaser/laravel-nestedset), you can list, create, update, and delete categories smoothly without any hassle, and sure it manage all the nested-set stuff automatically for you.
+
+- You can listen to the following events fired whenever there's an action on categories:
+    - rinvex.category.attaching
+    - rinvex.category.attached
+    - rinvex.category.detaching
+    - rinvex.category.detached
+    - rinvex.category.syncing
+    - rinvex.category.synced
 
 
 ## Changelog
