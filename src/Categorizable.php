@@ -34,8 +34,8 @@ trait Categorizable
     /**
      * Register a created model event with the dispatcher.
      *
-     * @param  \Closure|string $callback
-     * @param  int             $priority
+     * @param \Closure|string $callback
+     * @param int             $priority
      *
      * @return void
      */
@@ -44,12 +44,12 @@ trait Categorizable
     /**
      * Define a polymorphic many-to-many relationship.
      *
-     * @param  string $related
-     * @param  string $name
-     * @param  string $table
-     * @param  string $foreignKey
-     * @param  string $otherKey
-     * @param  bool   $inverse
+     * @param string $related
+     * @param string $name
+     * @param string $table
+     * @param string $foreignKey
+     * @param string $otherKey
+     * @param bool   $inverse
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
