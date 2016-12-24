@@ -132,7 +132,8 @@ trait Categorizable
      */
     public function scopeWithAllCategories(Builder $query, $categories, string $column = 'slug'): Builder
     {
-        $categories = static::isCategoriesStringBased($categories) ? $categories : static::hydrateCategories($categories)->pluck($column);
+        $categories = static::isCategoriesStringBased($categories)
+            ? $categories : static::hydrateCategories($categories)->pluck($column);
 
         collect($categories)->each(function ($category) use ($query, $column) {
             $query->whereHas('categories', function (Builder $query) use ($category, $column) {
@@ -154,7 +155,8 @@ trait Categorizable
      */
     public function scopeWithAnyCategories(Builder $query, $categories, string $column = 'slug'): Builder
     {
-        $categories = static::isCategoriesStringBased($categories) ? $categories : static::hydrateCategories($categories)->pluck($column);
+        $categories = static::isCategoriesStringBased($categories)
+            ? $categories : static::hydrateCategories($categories)->pluck($column);
 
         return $query->whereHas('categories', function (Builder $query) use ($categories, $column) {
             $query->whereIn($column, (array) $categories);
@@ -186,7 +188,8 @@ trait Categorizable
      */
     public function scopeWithoutCategories(Builder $query, $categories, string $column = 'slug'): Builder
     {
-        $categories = static::isCategoriesStringBased($categories) ? $categories : static::hydrateCategories($categories)->pluck($column);
+        $categories = static::isCategoriesStringBased($categories)
+            ? $categories : static::hydrateCategories($categories)->pluck($column);
 
         return $query->whereDoesntHave('categories', function (Builder $query) use ($categories, $column) {
             $query->whereIn($column, (array) $categories);
@@ -385,7 +388,8 @@ trait Categorizable
         $field = $isCategoriesStringBased ? 'slug' : 'id';
         $className = static::getCategoryClassName();
 
-        return $isCategoriesStringBased || $isCategoriesIntBased ? $className::query()->whereIn($field, (array) $categories)->get() : collect($categories);
+        return $isCategoriesStringBased || $isCategoriesIntBased
+            ? $className::query()->whereIn($field, (array) $categories)->get() : collect($categories);
     }
 
     /**
