@@ -172,7 +172,7 @@ trait Categorizable
     /**
      * Scope query without any categories.
      *
-     * @param \Illuminate\Database\Eloquent\Builder     $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
