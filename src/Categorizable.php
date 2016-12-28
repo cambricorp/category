@@ -42,6 +42,15 @@ trait Categorizable
     abstract public static function created($callback, $priority = 0);
 
     /**
+     * Register a deleted model event with the dispatcher.
+     *
+     * @param  \Closure|string  $callback
+     * @param  int  $priority
+     * @return void
+     */
+    abstract public static function deleted($callback, $priority = 0);
+
+    /**
      * Define a polymorphic many-to-many relationship.
      *
      * @param string      $related
@@ -106,6 +115,10 @@ trait Categorizable
 
                 $categorizableModel->queuedCategories = [];
             }
+        });
+
+        static::deleted(function (Model $categorizableModel) {
+            $categorizableModel->recategorize(null);
         });
     }
 
