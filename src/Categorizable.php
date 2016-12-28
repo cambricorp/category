@@ -32,6 +32,39 @@ trait Categorizable
     protected $queuedCategories = [];
 
     /**
+     * Register a created model event with the dispatcher.
+     *
+     * @param \Closure|string $callback
+     * @param int             $priority
+     *
+     * @return void
+     */
+    abstract public static function created($callback, $priority = 0);
+
+    /**
+     * Register a deleted model event with the dispatcher.
+     *
+     * @param  \Closure|string  $callback
+     * @param  int  $priority
+     * @return void
+     */
+    abstract public static function deleted($callback, $priority = 0);
+
+    /**
+     * Define a polymorphic many-to-many relationship.
+     *
+     * @param string      $related
+     * @param string      $name
+     * @param string|null $table
+     * @param string|null $foreignKey
+     * @param string|null $otherKey
+     * @param bool        $inverse
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    abstract public function morphToMany($related, $name, $table = null, $foreignKey = null, $otherKey = null, $inverse = false);
+
+    /**
      * Get category class name.
      *
      * @return string
@@ -48,7 +81,7 @@ trait Categorizable
      */
     public function categories(): MorphToMany
     {
-        return $this->morphToMany(static::getCategoryClassName(), 'categorizable')->withTimestamps();
+        return $this->morphToMany(static::getCategoryClassName(), 'categorizable', 'categorizables', 'categorizable_id', 'category_id')->withTimestamps();
     }
 
     /**
@@ -83,6 +116,10 @@ trait Categorizable
                 $categorizableModel->queuedCategories = [];
             }
         });
+
+        static::deleted(function (Model $categorizableModel) {
+            $categorizableModel->recategorize(null);
+        });
     }
 
     /**
@@ -108,7 +145,8 @@ trait Categorizable
      */
     public function scopeWithAllCategories(Builder $query, $categories, string $column = 'slug'): Builder
     {
-        $categories = static::isCategoriesStringBased($categories) ? $categories : static::hydrateCategories($categories)->pluck($column);
+        $categories = static::isCategoriesStringBased($categories)
+            ? $categories : static::hydrateCategories($categories)->pluck($column);
 
         collect($categories)->each(function ($category) use ($query, $column) {
             $query->whereHas('categories', function (Builder $query) use ($category, $column) {
@@ -130,7 +168,8 @@ trait Categorizable
      */
     public function scopeWithAnyCategories(Builder $query, $categories, string $column = 'slug'): Builder
     {
-        $categories = static::isCategoriesStringBased($categories) ? $categories : static::hydrateCategories($categories)->pluck($column);
+        $categories = static::isCategoriesStringBased($categories)
+            ? $categories : static::hydrateCategories($categories)->pluck($column);
 
         return $query->whereHas('categories', function (Builder $query) use ($categories, $column) {
             $query->whereIn($column, (array) $categories);
@@ -162,7 +201,8 @@ trait Categorizable
      */
     public function scopeWithoutCategories(Builder $query, $categories, string $column = 'slug'): Builder
     {
-        $categories = static::isCategoriesStringBased($categories) ? $categories : static::hydrateCategories($categories)->pluck($column);
+        $categories = static::isCategoriesStringBased($categories)
+            ? $categories : static::hydrateCategories($categories)->pluck($column);
 
         return $query->whereDoesntHave('categories', function (Builder $query) use ($categories, $column) {
             $query->whereIn($column, (array) $categories);
@@ -172,7 +212,7 @@ trait Categorizable
     /**
      * Scope query without any categories.
      *
-     * @param \Illuminate\Database\Eloquent\Builder     $query
+     * @param \Illuminate\Database\Eloquent\Builder $query
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -361,7 +401,8 @@ trait Categorizable
         $field = $isCategoriesStringBased ? 'slug' : 'id';
         $className = static::getCategoryClassName();
 
-        return $isCategoriesStringBased || $isCategoriesIntBased ? $className::query()->whereIn($field, (array) $categories)->get() : collect($categories);
+        return $isCategoriesStringBased || $isCategoriesIntBased
+            ? $className::query()->whereIn($field, (array) $categories)->get() : collect($categories);
     }
 
     /**

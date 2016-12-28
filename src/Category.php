@@ -59,7 +59,7 @@ class Category extends Model
      */
     public function entries(string $class): MorphToMany
     {
-        return $this->morphedByMany($class, 'categorizable');
+        return $this->morphedByMany($class, 'categorizable', 'categorizables', 'category_id', 'categorizable_id');
     }
 
     /**
@@ -70,7 +70,6 @@ class Category extends Model
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->doNotGenerateSlugsOnUpdate()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }

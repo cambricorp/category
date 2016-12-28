@@ -43,7 +43,7 @@ models out of the box.
 
 ## Usage
 
-- [Create Your Model](#create your-model)
+- [Create Your Model](#create-your-model)
 - [Manage Your Categories](#manage-your-categories)
 - [Manage Your Categorizable Model](#manage-your-categorizable-model)
 - [Generate Tag Slugs](#generate-tag-slugs)
