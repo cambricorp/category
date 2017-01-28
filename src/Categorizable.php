@@ -35,21 +35,19 @@ trait Categorizable
      * Register a created model event with the dispatcher.
      *
      * @param \Closure|string $callback
-     * @param int             $priority
      *
      * @return void
      */
-    abstract public static function created($callback, $priority = 0);
+    abstract public static function created($callback);
 
     /**
      * Register a deleted model event with the dispatcher.
      *
      * @param \Closure|string $callback
-     * @param int             $priority
      *
      * @return void
      */
-    abstract public static function deleted($callback, $priority = 0);
+    abstract public static function deleted($callback);
 
     /**
      * Define a polymorphic many-to-many relationship.
