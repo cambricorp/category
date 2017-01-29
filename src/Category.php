@@ -25,6 +25,33 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
+/**
+ * Rinvex\Category\Category
+ *
+ * @property int $id
+ * @property array $name
+ * @property string $slug
+ * @property array $description
+ * @property int $_lft
+ * @property int $_rgt
+ * @property int $parent_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property string $deleted_at
+ * @property-read \Rinvex\Category\Category $parent
+ * @property-read \Kalnoy\Nestedset\Collection|\Rinvex\Category\Category[] $children
+ * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereSlug($value)
+ * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereDescription($value)
+ * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereLft($value)
+ * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereRgt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereParentId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereDeletedAt($value)
+ * @mixin \Illuminate\Database\Eloquent\Model
+ */
 class Category extends Model
 {
     use HasSlug;
