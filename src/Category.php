@@ -26,7 +26,7 @@ use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
- * Rinvex\Category\Category
+ * Rinvex\Category\Category.
  *
  * @property int $id
  * @property array $name
@@ -40,6 +40,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string $deleted_at
  * @property-read \Rinvex\Category\Category $parent
  * @property-read \Kalnoy\Nestedset\Collection|\Rinvex\Category\Category[] $children
+ *
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereName($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereSlug($value)
