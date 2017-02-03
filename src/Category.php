@@ -30,19 +30,18 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 /**
  * Rinvex\Category\Category.
  *
- * @property int $id
- * @property array $name
- * @property string $slug
- * @property array $description
- * @property int $_lft
- * @property int $_rgt
- * @property int $parent_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property string $deleted_at
- * @property-read \Rinvex\Category\Category $parent
+ * @property int                                                           $id
+ * @property array                                                         $name
+ * @property string                                                        $slug
+ * @property array                                                         $description
+ * @property int                                                           $_lft
+ * @property int                                                           $_rgt
+ * @property int                                                           $parent_id
+ * @property \Carbon\Carbon                                                $created_at
+ * @property \Carbon\Carbon                                                $updated_at
+ * @property string                                                        $deleted_at
+ * @property-read \Rinvex\Category\Category                                $parent
  * @property-read \Kalnoy\Nestedset\Collection|\Rinvex\Category\Category[] $children
- *
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereName($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereSlug($value)
@@ -167,9 +166,7 @@ class Category extends Model
      */
     public function getSlugOptions(): SlugOptions
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('name')
-            ->saveSlugsTo('slug');
+        return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug');
     }
 
     /**
@@ -225,9 +222,7 @@ class Category extends Model
     {
         $locale = $locale ?? app()->getLocale();
 
-        return static::query()
-                     ->where("name->{$locale}", $name)
-                     ->first();
+        return static::query()->where("name->{$locale}", $name)->first();
     }
 
     /**

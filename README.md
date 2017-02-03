@@ -1,9 +1,9 @@
 # Rinvex Category
 
-**Rinvex Category** is a polymorphic Laravel package, for category management. You can categorize any eloquent model 
-with ease, and utilize the power of **[Nested Sets](https://github.com/lazychaser/laravel-nestedset)**, 
-and the awesomeness of **[Sluggable](https://github.com/spatie/laravel-sluggable)**, 
-and **[Translatable](https://github.com/spatie/laravel-translatable)** 
+**Rinvex Category** is a polymorphic Laravel package, for category management. You can categorize any eloquent model
+with ease, and utilize the power of **[Nested Sets](https://github.com/lazychaser/laravel-nestedset)**,
+and the awesomeness of **[Sluggable](https://github.com/spatie/laravel-sluggable)**,
+and **[Translatable](https://github.com/spatie/laravel-translatable)**
 models out of the box.
 
 [![Packagist](https://img.shields.io/packagist/v/rinvex/category.svg?label=Packagist&style=flat-square)](https://packagist.org/packages/rinvex/category)
@@ -105,7 +105,7 @@ Category::findByNameOrCreate('My Brand New Category');
 Category::findManyByNameOrCreate(['My Brand New Category 2', 'My Brand New Category 3']);
 ```
 
-> **Notes:** since **Rinvex Category** extends and utilizes other awesome packages, checkout the following 
+> **Notes:** since **Rinvex Category** extends and utilizes other awesome packages, checkout the following
 > documentations for further details:
 > - Powerful Nested Sets using [`kalnoy/nestedset`](https://github.com/lazychaser/laravel-nestedset)
 > - Automatic Slugging using [`spatie/laravel-sluggable`](https://github.com/spatie/laravel-sluggable)
@@ -145,7 +145,7 @@ $post->recategorize(['my-new-category', 'my-brand-new-category']);
 
 ### Generate Tag Slugs
 
-**Rinvex Category** auto generates slugs and auto detect and insert default translation for you, but you still 
+**Rinvex Category** auto generates slugs and auto detect and insert default translation for you, but you still
 can pass it explicitly through normal eloquent `create` method, as follows:
 
 ```php
@@ -154,8 +154,8 @@ Category::create(['name' => ['en' => 'My New Category'], 'slug' => 'custom-categ
 
 ### Smart Parameter Detection
 
-All categorizable methods that accept list of categories are smart enough to handle almost all kind of inputs, 
-for example you can pass single category slug, single category id, single category model, an array of category slugs, 
+All categorizable methods that accept list of categories are smart enough to handle almost all kind of inputs,
+for example you can pass single category slug, single category id, single category model, an array of category slugs,
 an array of category ids, or a collection of category models. It will check input type and behave accordingly. Example:
 
 ```php
@@ -255,10 +255,10 @@ ___
 
 ### Inserting Categories
 
-Moving and inserting categories includes several database queries, so **transaction is automatically started** 
+Moving and inserting categories includes several database queries, so **transaction is automatically started**
 when category is saved. It is safe to use global transaction if you work with several models.
 
-Another important note is that **structural manipulations are deferred** until you hit `save` on model 
+Another important note is that **structural manipulations are deferred** until you hit `save` on model
 (some methods implicitly call `save` and return boolean result of the operation).
 
 If model is successfully saved it doesn't mean that category was moved. If your application
@@ -335,7 +335,7 @@ $parent->prependNode($category);
 
 #### Inserting before or after specified category
 
-You can make `$category` to be a neighbor of the `$neighbor` category. 
+You can make `$category` to be a neighbor of the `$neighbor` category.
 Suppose that `$neighbor` is some existing category, while target category can be fresh.
 If target category exists, it will be moved to the new position and parent will be changed if it's required.
 
