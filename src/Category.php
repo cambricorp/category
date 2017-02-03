@@ -42,6 +42,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string                                                        $deleted_at
  * @property-read \Rinvex\Category\Category                                $parent
  * @property-read \Kalnoy\Nestedset\Collection|\Rinvex\Category\Category[] $children
+ *
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereName($value)
  * @method static \Illuminate\Database\Query\Builder|\Rinvex\Category\Category whereSlug($value)
@@ -91,7 +92,7 @@ class Category extends Model
     /**
      * Whether the model should throw a ValidationException if it fails validation.
      *
-     * @var boolean
+     * @var bool
      */
     protected $throwValidationExceptions = true;
 
