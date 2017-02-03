@@ -22,6 +22,7 @@ use Kalnoy\Nestedset\NodeTrait;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Rinvex\Cacheable\CacheableEloquent;
 use Spatie\Translatable\HasTranslations;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
@@ -58,6 +59,7 @@ class Category extends Model
     use HasSlug;
     use NodeTrait;
     use HasTranslations;
+    use CacheableEloquent;
 
     /**
      * {@inheritdoc}
