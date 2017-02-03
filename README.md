@@ -28,17 +28,21 @@ models out of the box.
     php artisan migrate --path="vendor/rinvex/category/database/migrations"
     ```
 
-3. **Optionally** add the following service provider to the `'providers'` array inside `app/config/app.php`:
+3. Add the following service provider to the `'providers'` array inside `app/config/app.php`:
     ```php
     Rinvex\Category\CategoryServiceProvider::class
     ```
-    
-   And then you can publish the migrations by running the following command:
+
+4. **Optionally** you can publish migration and config files by running the following command:
     ```shell
-    php artisan vendor:publish --tag="migrations"
+    // Publish migrations
+    php artisan vendor:publish --tag="migrations" --provider="Rinvex\Category\CategoryServiceProvider"
+
+    // Publish config
+    php artisan vendor:publish --tag="config" --provider="Rinvex\Category\CategoryServiceProvider"
     ```
 
-4. Done!
+5. Done!
 
 
 ## Usage
