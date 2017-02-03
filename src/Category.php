@@ -125,6 +125,42 @@ class Category extends Model
     }
 
     /**
+     * Set the translatable name attribute.
+     *
+     * @param string $value
+     *
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = ! is_array($value) ? json_encode([app()->getLocale() => $value]) : $value;
+    }
+
+    /**
+     * Set the translatable description attribute.
+     *
+     * @param string $value
+     *
+     * @return void
+     */
+    public function setDescriptionAttribute($value)
+    {
+        $this->attributes['description'] = ! is_array($value) && ! empty($value) ? json_encode([app()->getLocale() => $value]) : $value;
+    }
+
+    /**
+     * Enforce clean slugs.
+     *
+     * @param string $value
+     *
+     * @return void
+     */
+    public function setSlugAttribute($value)
+    {
+        $this->attributes['slug'] = str_slug($value);
+    }
+
+    /**
      * Get the options for generating the slug.
      *
      * @return \Spatie\Sluggable\SlugOptions
