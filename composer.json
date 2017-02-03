@@ -42,6 +42,7 @@
     "require": {
         "php": "^7.0.0",
         "kalnoy/nestedset": "^4.1.0",
+        "watson/validating": "^3.0.1",
         "illuminate/support": "~5.4.0",
         "illuminate/database": "~5.4.0",
         "rinvex/cacheable": "dev-develop",

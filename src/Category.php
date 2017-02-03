@@ -21,6 +21,7 @@ use Spatie\Sluggable\HasSlug;
 use Kalnoy\Nestedset\NodeTrait;
 use Spatie\Sluggable\SlugOptions;
 use Illuminate\Support\Collection;
+use Watson\Validating\ValidatingTrait;
 use Illuminate\Database\Eloquent\Model;
 use Rinvex\Cacheable\CacheableEloquent;
 use Spatie\Translatable\HasTranslations;
@@ -59,6 +60,7 @@ class Category extends Model
     use HasSlug;
     use NodeTrait;
     use HasTranslations;
+    use ValidatingTrait;
     use CacheableEloquent;
 
     /**
@@ -81,6 +83,20 @@ class Category extends Model
     ];
 
     /**
+     * The default rules that the model will validate against.
+     *
+     * @var array
+     */
+    protected $rules = [];
+
+    /**
+     * Whether the model should throw a ValidationException if it fails validation.
+     *
+     * @var boolean
+     */
+    protected $throwValidationExceptions = true;
+
+    /**
      * Create a new Eloquent model instance.
      *
      * @param array $attributes
@@ -90,6 +106,10 @@ class Category extends Model
         parent::__construct($attributes);
 
         $this->setTable(config('rinvex.category.tables.categories'));
+        $this->setRules([
+            'name' => 'required',
+            'slug' => 'required|unique:'.config('rinvex.category.tables.categories').',slug',
+        ]);
     }
 
     /**
@@ -101,7 +121,7 @@ class Category extends Model
      */
     public function entries(string $class): MorphToMany
     {
-        return $this->morphedByMany($class, 'categorizable', 'categorizables', 'category_id', 'categorizable_id');
+        return $this->morphedByMany($class, 'categorizable', config('rinvex.category.tables.categorizables'), 'category_id', 'categorizable_id');
     }
 
     /**
