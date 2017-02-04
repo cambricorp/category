@@ -107,8 +107,9 @@ class Category extends Model
 
         $this->setTable(config('rinvex.category.tables.categories'));
         $this->setRules([
-            'name' => 'required',
-            'slug' => 'required|unique:'.config('rinvex.category.tables.categories').',slug',
+            'name' => 'required|string',
+            'description' => 'nullable|string',
+            'slug' => 'required|alpha_dash|unique:'.config('rinvex.category.tables.categories').',slug',
         ]);
     }
 
