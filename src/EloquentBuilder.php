@@ -20,7 +20,7 @@ namespace Rinvex\Category;
 use Kalnoy\Nestedset\QueryBuilder;
 
 /**
- * Class EloquentBuilder
+ * Class EloquentBuilder.
  *
  * This class is an override to resolve the trait conflict between:
  * - NodeTrait::newEloquentBuilder
