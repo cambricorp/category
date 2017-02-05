@@ -243,4 +243,12 @@ class Category extends Model
             'name' => [$locale => $name],
         ]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function newEloquentBuilder($query)
+    {
+        return new EloquentBuilder($query);
+    }
 }
