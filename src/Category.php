@@ -73,6 +73,11 @@ class Category extends Model
     ];
 
     /**
+     * {@inheritdoc}
+     */
+    protected $observables = ['validating', 'validated'];
+
+    /**
      * The attributes that are translatable.
      *
      * @var array
@@ -111,6 +116,27 @@ class Category extends Model
             'description' => 'nullable|string',
             'slug' => 'required|alpha_dash|unique:'.config('rinvex.category.tables.categories').',slug',
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        if (isset(static::$dispatcher)) {
+            // Early auto generate slugs before validation
+            static::$dispatcher->listen("eloquent.validating: ".static::class, function($model, $event) {
+                if (! $model->slug) {
+                    if ($model->exists) {
+                        $model->generateSlugOnCreate();
+                    } else {
+                        $model->generateSlugOnUpdate();
+                    }
+                }
+            });
+        }
     }
 
     /**
