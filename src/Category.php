@@ -127,7 +127,7 @@ class Category extends Model
 
         if (isset(static::$dispatcher)) {
             // Early auto generate slugs before validation
-            static::$dispatcher->listen("eloquent.validating: ".static::class, function($model, $event) {
+            static::$dispatcher->listen('eloquent.validating: '.static::class, function ($model, $event) {
                 if (! $model->slug) {
                     if ($model->exists) {
                         $model->generateSlugOnCreate();
