@@ -377,13 +377,13 @@ trait Categorizable
         $categories = static::hydrateCategories($categories)->pluck('id')->toArray();
 
         // Fire the category syncing event
-        static::$dispatcher->fire("rinvex.category.{$event}ing", [$this, $categories]);
+        static::$dispatcher->dispatch("rinvex.category.{$event}ing", [$this, $categories]);
 
         // Set categories
         $this->categories()->$action($categories);
 
         // Fire the category synced event
-        static::$dispatcher->fire("rinvex.category.{$event}ed", [$this, $categories]);
+        static::$dispatcher->dispatch("rinvex.category.{$event}ed", [$this, $categories]);
     }
 
     /**
