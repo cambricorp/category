@@ -342,19 +342,19 @@ trait Categorizable
 
         // Array of category slugs
         if (is_array($categories) && isset($categories[0]) && is_string($categories[0])) {
-            return $this->categories->pluck('slug')->count() == count($categories)
+            return $this->categories->pluck('slug')->count() === count($categories)
                    && $this->categories->pluck('slug')->diff($categories)->isEmpty();
         }
 
         // Array of category ids
         if (is_array($categories) && isset($categories[0]) && is_int($categories[0])) {
-            return $this->categories->pluck('id')->count() == count($categories)
+            return $this->categories->pluck('id')->count() === count($categories)
                    && $this->categories->pluck('id')->diff($categories)->isEmpty();
         }
 
         // Collection of category models
         if ($categories instanceof Collection) {
-            return $this->categories->count() == $categories->count() && $this->categories->diff($categories)->isEmpty();
+            return $this->categories->count() === $categories->count() && $this->categories->diff($categories)->isEmpty();
         }
 
         return false;
@@ -371,7 +371,7 @@ trait Categorizable
     protected function setCategories($categories, string $action)
     {
         // Fix exceptional event name
-        $event = $action == 'syncWithoutDetaching' ? 'attach' : $action;
+        $event = $action === 'syncWithoutDetaching' ? 'attach' : $action;
 
         // Hydrate Categories
         $categories = static::hydrateCategories($categories)->pluck('id')->toArray();
